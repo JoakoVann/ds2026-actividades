@@ -5,6 +5,7 @@
 :root{
     --border-radius: 6px;
     --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    --color: #f00;
 }
 
 nav{
@@ -41,11 +42,11 @@ nav{
 .estudios{
     margin-top: 2rem;
     border-radius: var(--border-radius);
-    border: solid #f00;
+    border: solid var(--color);
     padding: 5px;
 }
 
 a:hover{
     text-decoration: underline;
-    color: #f00;
+    color: var(--color);
 }
