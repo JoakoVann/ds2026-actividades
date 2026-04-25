@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalogardo</title>
+</head>
+<body>
+    <h1>Catálogo</h1>
+    <input type="text" id="filtroAutor">
+    <button id="filtrar">Filtrar</button>
+    <button id="mostrarDisponibles">Solo disponibles</button>
+    <button id="mostrarTodos">Ver todos</button>
+    <ul id="listado"></ul>
+    <p id="stats"></p>
+    <form id="formu">
+        <input type="text" id="titulo" placeholder="Titulo del libro">
+        <input type="text" id="autor" placeholder="Autor del libro">
+        <input type="text" id="genero" placeholder="Genero del libro">
+        <input type="number" id="precio" placeholder="Precio del libro">
+        <button id="agregar">Agregar libro</button>
+    </form>
+    <div id="errorForm"></div>
+    <script src="app.js"></script>
+</body>
+</html>

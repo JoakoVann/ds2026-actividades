@@ -54,21 +54,23 @@ function renderizar(libros: Libro[]): void {
     
     estadisticas.textContent = `cantidad: ${libros.length} // precio promedio ${precioPromedio(libros)}`; 
 }
-    
-    if (filtrar && filtroAutor){
-        filtrar.addEventListener("click", () =>{
-            renderizar(buscarPorAutor(filtroAutor.value))
-        });
-    };
 
-    if (dispo){
-        dispo.addEventListener("click", () => {
-            renderizar(librosDisponibles())
-        });
-    }
+if (filtrar && filtroAutor){
+    filtrar.addEventListener("click", () =>{
+        renderizar(buscarPorAutor(filtroAutor.value))
+    });
+};
 
-    if(todos){
-        todos.addEventListener("click", () => {
-            renderizar(catalogo)
-        });
-    }
+if (dispo){
+    dispo.addEventListener("click", () => {
+        renderizar(librosDisponibles())
+    });
+}
+
+if(todos){
+    todos.addEventListener("click", () => {
+        renderizar(catalogo)
+    });
+}
+
+renderizar(catalogo)
