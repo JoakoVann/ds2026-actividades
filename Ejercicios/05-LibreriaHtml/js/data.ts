@@ -1,32 +1,45 @@
-"use strict";
-const btnBusqueda = document.getElementById("btnBuscar");
-const filtro = document.getElementById("busqueda");
-const resultados = document.getElementById("resultados");
-async function buscarLibros(busqueda) {
-    const buscador = `https://openlibrary.org/search.json?title=${encodeURIComponent(busqueda)}`;
-    const rta = await fetch(buscador);
-    if (!rta.ok)
-        throw new Error("Error en la busqueda de libros");
-    const datos = await rta.json();
-    return datos.docs;
+interface Libro {
+    title: string;
+    author_name?: string[];
+    cover_i?: number;
+    key: string;
 }
-const renderizarRes = (libros) => {
-    if (!resultados)
-        return;
-    resultados.innerHTML = ``;
+
+
+const btnBusqueda = document.getElementById("btnBuscar") as HTMLButtonElement;
+const filtro = document.getElementById("busqueda") as HTMLInputElement;
+const resultados = document.getElementById("resultados") as HTMLDivElement | null;
+
+async function buscarLibros(busqueda: string){
+    const buscador = `https://openlibrary.org/search.json?title=${encodeURIComponent(busqueda)}`;
+        const rta = await fetch(buscador);
+
+        if(!rta.ok) throw new Error("Error en la busqueda de libros");
+        const datos = await rta.json();
+        return datos.docs
+}
+
+const renderizarRes = (libros: Libro[]) => {
+    if (!resultados) return;
+
+    resultados.innerHTML= ``;
+
     if (libros.length === 0) {
-        resultados.innerHTML = `
+        resultados.innerHTML=`
             <div class="alert alert-danger" role="alert">
                 NO SE ENCONTRARON LIBROS
             </div>
         `;
         return;
     }
+
     libros.forEach(l => {
-        const imgUrl = l.cover_i
-            ? `https://covers.openlibrary.org/b/id/${l.cover_i}-M.jpg`
-            : 'https://placehold.co/300x400?text=Sin+Portada';
-        const autor = l.author_name ? l.author_name[0] : "Autor Desconocido";
+        const imgUrl: string = l.cover_i
+        ? `https://covers.openlibrary.org/b/id/${l.cover_i}-M.jpg` 
+        : 'https://placehold.co/300x400?text=Sin+Portada';
+
+        const autor: string = l.author_name ? l.author_name[0]: "Autor Desconocido";
+
         const tarjeta = `
             <div class="col-12 col-md-6 col-lg-3">
                 <div class="card h-100 border border-secondary-subtle">
@@ -37,40 +50,41 @@ const renderizarRes = (libros) => {
                     </div>
                 </div>
             </div>`;
+        
         resultados.insertAdjacentHTML("beforeend", tarjeta);
     });
-};
-btnBusqueda.addEventListener("click", async () => {
+}
+
+btnBusqueda.addEventListener("click", async ()=>{
     const busqueda = filtro.value || "";
-    if (busqueda.trim() !== "") {
-        if (resultados) {
-            resultados.innerHTML = `
+
+    if(busqueda.trim() !== ""){
+        if (resultados){
+            resultados.innerHTML=`
                 <div class="text-center w-100 py-5">
                     <div class="spinner-border text-primary" role="status"></div>
                 </div>`;
         }
-    }
-    else {
-        if (resultados) {
-            resultados.innerHTML =
-                `<div class="alert alert-danger" role="alert">
+    } else {
+        if (resultados){
+            resultados.innerHTML=
+            `<div class="alert alert-danger" role="alert">
                 Ingrese un autor valido
             </div>
-            `;
-        }
+            `;}
     }
+    
     try {
-        if (resultados) {
-            resultados.innerHTML = `
+        if (resultados){
+            resultados.innerHTML=`
                 <p class="text-uppercase fs-3 fw-bold">Buscando Libros.... </p>
             `;
         }
         const libros = await buscarLibros(busqueda);
         renderizarRes(libros);
-    }
-    catch (error) {
-        if (resultados) {
-            resultados.innerHTML = `
+    } catch (error) {
+        if(resultados){
+            resultados.innerHTML=`
             <div class="alert alert-danger" role="alert">
                 Error en la busqueda
             </div>
