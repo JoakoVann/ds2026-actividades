@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Card, Button } from 'react-bootstrap';
 import type { Libro } from './types/libroProps';
+import { Link } from 'react-router-dom';
 
 interface BookCardProps {
   libro: Libro;
@@ -24,9 +25,11 @@ const BookCard: React.FC<BookCardProps> = ({ libro }) => {
                 <Card.Title className="fs-6 fw-bold">Título: {libro.titulo}</Card.Title>
                 <Card.Text className="text-muted mb-4">Autor: {libro.autor}</Card.Text>
                 <div className="mt-auto d-flex gap-2">
-                    <Button href="#libro" variant="primary" className="flex-grow-1">
-                        Ver Más
-                    </Button>
+                    <Link to={`/libros/${libro.id}`}>
+                        <Button href="#libro" variant="primary" className="flex-grow-1">
+                            Ver Más
+                        </Button>
+                    </Link>
                     <Button
                         // className="d-none"
                         variant="link"

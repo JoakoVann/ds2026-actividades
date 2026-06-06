@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 const Hero: React.FC = () => {
     const heroStyle = {
@@ -24,9 +25,11 @@ const Hero: React.FC = () => {
                             Descubre los mejores libros del país
                         </p>
                         <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                            <Button href="#catalogo" variant="primary" size="lg" className="px-5 py-3 fw-semibold">
-                                Explorar Catálogo
-                            </Button>
+                            <Link to="/catalogo">
+                                <Button href="#catalogo" variant="primary" size="lg" className="px-5 py-3 fw-semibold">
+                                    Explorar Catálogo
+                                </Button>
+                            </Link>
                         </div>
                     </Col>
                 </Row>
