@@ -1,0 +1,38 @@
+[
+  {
+    "id": "OL1M",
+    "titulo": "Cien Años de Soledad",
+    "autor": "Gabriel García Márquez",
+    "imagen": "https://picsum.photos/id/237/400/600"
+  },
+  {
+    "id": "OL2M",
+    "titulo": "Don Quijote de la Mancha",
+    "autor": "Miguel de Cervantes",
+    "imagen": "https://picsum.photos/id/238/400/600"
+  },
+  {
+    "id": "OL3M",
+    "titulo": "El Principito",
+    "autor": "Antoine de Saint-Exupéry",
+    "imagen": "https://picsum.photos/id/239/400/600"
+  },
+  {
+    "id": "OL4M",
+    "titulo": "1984",
+    "autor": "George Orwell",
+    "imagen": "https://picsum.photos/id/240/400/600"
+  },
+  {
+    "id": "OL5M",
+    "titulo": "Orgullo y Prejuicio",
+    "autor": "Jane Austen",
+    "imagen": "https://picsum.photos/id/241/400/600"
+  },
+  {
+    "id": "OL6M",
+    "titulo": "La Odisea",
+    "autor": "Homero",
+    "imagen": "https://picsum.photos/id/242/400/600"
+  }
+]
