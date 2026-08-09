@@ -1,0 +1,54 @@
+### Libros - listar
+GET http://localhost:3000/api/libros
+
+### Libros - obtener 1
+GET http://localhost:3000/api/libros/1
+
+### Libros - obtener no existente (404)
+GET http://localhost:3000/api/libros/999
+
+### Libros - crear (201)
+POST http://localhost:3000/api/libros
+Content-Type: application/json
+
+{
+  "titulo": "Nuevo Libro",
+  "autor": "Autor X",
+  "imagen": "https://example.com/cover.jpg"
+}
+
+### Libros - actualizar
+PUT http://localhost:3000/api/libros/1
+Content-Type: application/json
+
+{
+  "titulo": "El principito - edición"
+}
+
+### Libros - borrar
+DELETE http://localhost:3000/api/libros/2
+
+### Autores - listar
+GET http://localhost:3000/api/autores
+
+### Autores - crear (201)
+POST http://localhost:3000/api/autores
+Content-Type: application/json
+
+{
+  "nombre": "Isabel",
+  "apellido": "Allende",
+  "nacionalidad": "Chilena"
+}
+
+### Autores - crear inválido (400)
+POST http://localhost:3000/api/autores
+Content-Type: application/json
+
+{
+  "apellido": "SinNombre"
+}
+
+### Autores - obtener no existente (404)
+GET http://localhost:3000/api/autores/999
+
