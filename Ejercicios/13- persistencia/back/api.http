@@ -1,0 +1,85 @@
+### Libros - listar
+GET http://localhost:3000/api/libros
+
+### Libros - obtener no existente (404)
+GET http://localhost:3000/api/libros/no-existe
+
+### Libros - crear (201)
+POST http://localhost:3000/api/libros
+Content-Type: application/json
+
+{
+  "titulo": "Nuevo Libro",
+  "autor": "Autor X",
+  "precio": 5000,
+  "imagen": "https://example.com/cover.jpg"
+}
+
+### Libros - crear inválido (400)
+POST http://localhost:3000/api/libros
+Content-Type: application/json
+
+{
+  "autor": "Sin título",
+  "imagen": "https://example.com/cover.jpg"
+}
+
+### Libros - actualizar (usar un id devuelto por listar/crear)
+PUT http://localhost:3000/api/libros/{{libroId}}
+Content-Type: application/json
+
+{
+  "titulo": "El principito - edición"
+}
+
+### Libros - borrar (usar un id devuelto por listar/crear)
+DELETE http://localhost:3000/api/libros/{{libroId}}
+
+### Libros - actualizar no existente (404)
+PUT http://localhost:3000/api/libros/no-existe
+Content-Type: application/json
+
+{
+  "titulo": "No debería existir"
+}
+
+### Libros - borrar no existente (404)
+DELETE http://localhost:3000/api/libros/no-existe
+
+### Autores - listar
+GET http://localhost:3000/api/autores
+
+### Autores - crear (201)
+POST http://localhost:3000/api/autores
+Content-Type: application/json
+
+{
+  "nombre": "Isabel",
+  "nacionalidad": "Chile"
+}
+
+### Autores - crear inválido (400)
+POST http://localhost:3000/api/autores
+Content-Type: application/json
+
+{
+  "apellido": "SinNombre"
+}
+
+### Autores - listar nuevamente
+GET http://localhost:3000/api/autores
+
+### Autores - actualizar
+PUT http://localhost:3000/api/autores/no-existe
+Content-Type: application/json
+
+{
+  "nombre": "No debería existir"
+}
+
+### Autores - borrar no existente (404)
+DELETE http://localhost:3000/api/autores/no-existe
+
+### Autores - obtener no existente (404)
+GET http://localhost:3000/api/autores/no-existe
+
