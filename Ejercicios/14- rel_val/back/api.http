@@ -1,0 +1,121 @@
+### Libros - listar
+GET http://localhost:3000/api/libros
+
+### Libros - detalle con autor y categorías
+GET http://localhost:3000/api/libros/1
+
+### Libros - obtener no existente (404)
+GET http://localhost:3000/api/libros/999999
+
+### Libros - crear válido (201)
+POST http://localhost:3000/api/libros
+Content-Type: application/json
+
+{
+  "titulo": "La vuelta al mundo en 80 días",
+  "precio": 6800,
+  "imagen": "https://example.com/libro.jpg",
+  "disponible": true,
+  "autorId": 1,
+  "categoriaIds": [1, 3]
+}
+
+### Libros - crear inválido (400)
+POST http://localhost:3000/api/libros
+Content-Type: application/json
+
+{
+  "titulo": "",
+  "precio": "no-es-numero",
+  "imagen": "bad-url",
+  "autorId": 1
+}
+
+### Libros - crear duplicado / conflicto (409)
+POST http://localhost:3000/api/libros
+Content-Type: application/json
+
+{
+  "titulo": "1984",
+  "precio": 5000,
+  "imagen": "https://example.com/dup.jpg",
+  "disponible": true,
+  "autorId": 2,
+  "categoriaIds": [2]
+}
+
+### Libros - actualizar válido
+PUT http://localhost:3000/api/libros/1
+Content-Type: application/json
+
+{
+  "precio": 7200,
+  "categoriaIds": [1, 2]
+}
+
+### Libros - actualizar no existente (404)
+PUT http://localhost:3000/api/libros/999999
+Content-Type: application/json
+
+{
+  "precio": 7000
+}
+
+### Libros - borrar existente
+DELETE http://localhost:3000/api/libros/1
+
+### Libros - borrar no existente (404)
+DELETE http://localhost:3000/api/libros/999999
+
+### Autores - listar
+GET http://localhost:3000/api/autores
+
+### Autores - detalle
+GET http://localhost:3000/api/autores/1
+
+### Autores - crear válido (201)
+POST http://localhost:3000/api/autores
+Content-Type: application/json
+
+{
+  "nombre": "Isabel Allende",
+  "nacionalidad": "Chile"
+}
+
+### Autores - crear inválido (400)
+POST http://localhost:3000/api/autores
+Content-Type: application/json
+
+{
+  "nombre": "I",
+  "nacionalidad": ""
+}
+
+### Autores - crear duplicado (409)
+POST http://localhost:3000/api/autores
+Content-Type: application/json
+
+{
+  "nombre": "Gabriel García Márquez",
+  "nacionalidad": "Colombia"
+}
+
+### Autores - actualizar válido
+PUT http://localhost:3000/api/autores/1
+Content-Type: application/json
+
+{
+  "nacionalidad": "Argentina"
+}
+
+### Autores - actualizar no existente (404)
+PUT http://localhost:3000/api/autores/999999
+Content-Type: application/json
+
+{
+  "nacionalidad": "Brasil"
+}
+
+### Autores - borrar no existente (404)
+DELETE http://localhost:3000/api/autores/999999
+
