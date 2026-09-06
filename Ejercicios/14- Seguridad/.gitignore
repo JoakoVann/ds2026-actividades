@@ -1,0 +1,6 @@
+back/.env
+back/node_modules/
+back/dist/
+back/src/generated/
+front/node_modules/
+front/dist/
