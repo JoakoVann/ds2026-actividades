@@ -1,7 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 const Header: React.FC = () => {
+    const { usuario, cargando, estaAutenticado, tieneRol, logout } = useAuth();
+
     return (
         <nav className="navbar navbar-expand-lg bg-body-secondary fixed-top shadow-sm">
             <div className="container-fluid">
@@ -24,12 +27,25 @@ const Header: React.FC = () => {
                         <li className="nav-item">
                             <Link to="/catalogo" className="nav-link">Catálogo</Link>
                         </li>
-                        <li className="nav-item">
-                            <Link to="/altaLibro" className="nav-link">Alta Libro</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link to="/login" className="nav-link">Ingresar</Link>
-                        </li>
+                        {tieneRol('ADMIN') && (
+                            <li className="nav-item">
+                                <Link to="/libros/nuevo" className="nav-link">Nuevo libro</Link>
+                            </li>
+                        )}
+                        {!cargando && (
+                            <li className="nav-item d-flex align-items-center">
+                                {estaAutenticado && usuario ? (
+                                    <span className="nav-link">
+                                        Hola, {usuario.nombre} ·{' '}
+                                        <button type="button" className="btn btn-link nav-link d-inline p-0" onClick={logout}>
+                                            Salir
+                                        </button>
+                                    </span>
+                                ) : (
+                                    <Link to="/login" className="nav-link">Ingresar</Link>
+                                )}
+                            </li>
+                        )}
                     </ul>
                 </div>
             </div>

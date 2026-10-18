@@ -2,7 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { z } from 'zod';
 import { Alert, Button, Card, Container, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { apiFetch } from '../services/api';
+import { useAuth } from '../context/AuthContext';
 
 const loginSchema = z.object({
   email: z.string().trim().email('Ingresá un email válido.'),
@@ -10,10 +10,9 @@ const loginSchema = z.object({
 });
 
 type LoginData = z.infer<typeof loginSchema>;
-type LoginResponse = { token: string };
-
 export default function Login() {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [form, setForm] = useState<LoginData>({ email: '', password: '' });
   const [errors, setErrors] = useState<Partial<Record<keyof LoginData, string>>>({});
   const [serverError, setServerError] = useState<string | null>(null);
@@ -31,11 +30,7 @@ export default function Login() {
     setServerError(null);
     setLoading(true);
     try {
-      const response = await apiFetch<LoginResponse>('/auth/login', {
-        method: 'POST',
-        body: JSON.stringify(result.data),
-      });
-      localStorage.setItem('token', response.token);
+      await login(result.data);
       navigate('/catalogo');
     } catch (reason: unknown) {
       setServerError(reason instanceof Error ? reason.message : 'No se pudo iniciar sesión.');
