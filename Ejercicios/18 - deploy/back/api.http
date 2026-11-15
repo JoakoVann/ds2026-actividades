@@ -1,0 +1,203 @@
+@baseUrl = http://localhost:3000
+
+### 1. Registro: 201 sin passwordHash
+POST {{baseUrl}}/api/auth/registro
+Content-Type: application/json
+
+{ "nombre": "Ana", "email": "ana@libreria.test", "password": "Libreria2026" }
+
+### 2. Registro repetido: 409
+POST {{baseUrl}}/api/auth/registro
+Content-Type: application/json
+
+{ "nombre": "Ana", "email": "ana@libreria.test", "password": "Libreria2026" }
+
+### 3. Registro inválido: 400 con errores de password
+POST {{baseUrl}}/api/auth/registro
+Content-Type: application/json
+
+{ "nombre": "", "email": "no-es-mail", "password": "corta" }
+
+### 4. Login de usuario inexistente: 401 genérico
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{ "email": "nadie@libreria.test", "password": "Libreria2026" }
+
+### 5. Login con password incorrecto: 401 con el mismo mensaje
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{ "email": "ana@libreria.test", "password": "Incorrecta1" }
+
+### 6. Login CLIENTE: 200 con token
+# @name loginCliente
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{ "email": "cliente@libreria.test", "password": "Cliente1234" }
+
+@tokenCliente = {{loginCliente.response.body.token}}
+
+### Login ADMIN para las pruebas de escritura
+# @name loginAdmin
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{ "email": "admin@libreria.test", "password": "Admin1234" }
+
+@tokenAdmin = {{loginAdmin.response.body.token}}
+
+### 7. /auth/yo sin token: 401
+GET {{baseUrl}}/api/auth/yo
+
+### 8. /auth/yo con CLIENTE: 200
+GET {{baseUrl}}/api/auth/yo
+Authorization: Bearer {{tokenCliente}}
+
+### 9. Crear libro sin token: 401
+POST {{baseUrl}}/api/libros
+Content-Type: application/json
+
+{ "titulo": "Rayuela", "precio": 7000, "imagen": "https://example.com/rayuela.jpg", "autorId": 1 }
+
+### 10. Crear libro como CLIENTE: 403
+POST {{baseUrl}}/api/libros
+Content-Type: application/json
+Authorization: Bearer {{tokenCliente}}
+
+{ "titulo": "Rayuela", "precio": 7000, "imagen": "https://example.com/rayuela.jpg", "autorId": 1 }
+
+### 11. Crear libro como ADMIN: 201
+POST {{baseUrl}}/api/libros
+Content-Type: application/json
+Authorization: Bearer {{tokenAdmin}}
+
+{ "titulo": "Rayuela", "precio": 7000, "imagen": "https://example.com/rayuela.jpg", "autorId": 1 }
+
+### 12. GET público sin token: 200
+GET {{baseUrl}}/api/libros
+
+### Token adulterado: 401
+GET {{baseUrl}}/api/auth/yo
+Authorization: Bearer token-modificado-manualmente### Libros - listar
+GET http://localhost:3000/api/libros
+
+### Libros - detalle con autor y categorías
+GET http://localhost:3000/api/libros/1
+
+### Libros - obtener no existente (404)
+GET http://localhost:3000/api/libros/999999
+
+### Libros - crear válido (201)
+POST http://localhost:3000/api/libros
+Content-Type: application/json
+
+{
+  "titulo": "La vuelta al mundo en 80 días",
+  "precio": 6800,
+  "imagen": "https://example.com/libro.jpg",
+  "disponible": true,
+  "autorId": 1,
+  "categoriaIds": [1, 3]
+}
+
+### Libros - crear inválido (400)
+POST http://localhost:3000/api/libros
+Content-Type: application/json
+
+{
+  "titulo": "",
+  "precio": "no-es-numero",
+  "imagen": "bad-url",
+  "autorId": 1
+}
+
+### Libros - crear duplicado / conflicto (409)
+POST http://localhost:3000/api/libros
+Content-Type: application/json
+
+{
+  "titulo": "1984",
+  "precio": 5000,
+  "imagen": "https://example.com/dup.jpg",
+  "disponible": true,
+  "autorId": 2,
+  "categoriaIds": [2]
+}
+
+### Libros - actualizar válido
+PUT http://localhost:3000/api/libros/1
+Content-Type: application/json
+
+{
+  "precio": 7200,
+  "categoriaIds": [1, 2]
+}
+
+### Libros - actualizar no existente (404)
+PUT http://localhost:3000/api/libros/999999
+Content-Type: application/json
+
+{
+  "precio": 7000
+}
+
+### Libros - borrar existente
+DELETE http://localhost:3000/api/libros/1
+
+### Libros - borrar no existente (404)
+DELETE http://localhost:3000/api/libros/999999
+
+### Autores - listar
+GET http://localhost:3000/api/autores
+
+### Autores - detalle
+GET http://localhost:3000/api/autores/1
+
+### Autores - crear válido (201)
+POST http://localhost:3000/api/autores
+Content-Type: application/json
+
+{
+  "nombre": "Isabel Allende",
+  "nacionalidad": "Chile"
+}
+
+### Autores - crear inválido (400)
+POST http://localhost:3000/api/autores
+Content-Type: application/json
+
+{
+  "nombre": "I",
+  "nacionalidad": ""
+}
+
+### Autores - crear duplicado (409)
+POST http://localhost:3000/api/autores
+Content-Type: application/json
+
+{
+  "nombre": "Gabriel García Márquez",
+  "nacionalidad": "Colombia"
+}
+
+### Autores - actualizar válido
+PUT http://localhost:3000/api/autores/1
+Content-Type: application/json
+
+{
+  "nacionalidad": "Argentina"
+}
+
+### Autores - actualizar no existente (404)
+PUT http://localhost:3000/api/autores/999999
+Content-Type: application/json
+
+{
+  "nacionalidad": "Brasil"
+}
+
+### Autores - borrar no existente (404)
+DELETE http://localhost:3000/api/autores/999999
+
