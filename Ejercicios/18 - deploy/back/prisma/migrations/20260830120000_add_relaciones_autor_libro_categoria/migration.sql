@@ -1,3 +1,5 @@
+BEGIN;
+
 -- CreateTable: Categoria
 CREATE TABLE "Categoria" (
     "id" SERIAL NOT NULL,
@@ -6,26 +8,21 @@ CREATE TABLE "Categoria" (
     CONSTRAINT "Categoria_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable: Autor
-CREATE TABLE "Autor" (
-    "id" SERIAL NOT NULL,
-    "nombre" TEXT NOT NULL,
-    "nacionalidad" TEXT NOT NULL,
+-- Convert the existing Libro.autor values into related Autor records.
+INSERT INTO "Autor" ("nombre", "nacionalidad")
+SELECT DISTINCT "autor", 'Desconocida'
+FROM "Libro"
+ON CONFLICT ("nombre") DO NOTHING;
 
-    CONSTRAINT "Autor_pkey" PRIMARY KEY ("id")
-);
+ALTER TABLE "Libro" ADD COLUMN "autorId" INTEGER;
 
--- CreateTable: Libro
-CREATE TABLE "Libro" (
-    "id" SERIAL NOT NULL,
-    "titulo" TEXT NOT NULL,
-    "precio" INTEGER NOT NULL,
-    "imagen" TEXT NOT NULL,
-    "disponible" BOOLEAN NOT NULL DEFAULT true,
-    "autorId" INTEGER NOT NULL,
+UPDATE "Libro" AS libro
+SET "autorId" = autor."id"
+FROM "Autor" AS autor
+WHERE autor."nombre" = libro."autor";
 
-    CONSTRAINT "Libro_pkey" PRIMARY KEY ("id")
-);
+ALTER TABLE "Libro" ALTER COLUMN "autorId" SET NOT NULL;
+ALTER TABLE "Libro" DROP COLUMN "autor";
 
 -- CreateTable: LibroCategoria
 CREATE TABLE "LibroCategoria" (
@@ -36,13 +33,7 @@ CREATE TABLE "LibroCategoria" (
 -- CreateIndex
 CREATE UNIQUE INDEX "Categoria_nombre_key" ON "Categoria"("nombre");
 
--- CreateIndex
-CREATE UNIQUE INDEX "Autor_nombre_key" ON "Autor"("nombre");
-
--- CreateIndex
 CREATE UNIQUE INDEX "LibroCategoria_AB_unique" ON "LibroCategoria"("A", "B");
-
--- CreateIndex
 CREATE INDEX "LibroCategoria_B_index" ON "LibroCategoria"("B");
 
 -- AddForeignKey
@@ -50,12 +41,12 @@ ALTER TABLE "Libro"
 ADD CONSTRAINT "Libro_autorId_fkey"
 FOREIGN KEY ("autorId") REFERENCES "Autor"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
--- AddForeignKey
 ALTER TABLE "LibroCategoria"
 ADD CONSTRAINT "LibroCategoria_A_fkey"
 FOREIGN KEY ("A") REFERENCES "Libro"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
--- AddForeignKey
 ALTER TABLE "LibroCategoria"
 ADD CONSTRAINT "LibroCategoria_B_fkey"
 FOREIGN KEY ("B") REFERENCES "Categoria"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+COMMIT;
